@@ -7,6 +7,9 @@ local fxMod     = require('fx')
 gameMod.setDifficulty("EASY")   -- "EASY", "MEDIUM", or "HARD"
 gameMod.setGodMode(false)        -- true or false
 
+konamiCode = {"up", "up", "down", "down", "left", "right", "left", "right", 'b', 'a', "return"}
+konamiCounter = 1
+
 ----------------------------------------------------------- 
 --  Load Callback
 --  Invoked at the start of the game. Place the loading of 
@@ -135,6 +138,15 @@ function love.keypressed(key, unicode)
         gameMod.setPaused(not gameMod.paused())
     elseif key == 'escape' then
         love.event.quit()
+    end
+    if not gameMod.paused() and not gameMod.gameOver() and key == konamiCode[konamiCounter] then
+        konamiCounter = konamiCounter + 1
+        print('Konami Counter: ' .. konamiCounter)
+        if konamiCounter == 12 then
+            gameMod.setGodMode(true)
+        end
+    else
+        konamiCounter = 1
     end
 end
 
